@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Optical Agent</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <div class="title-box">AI optical agent</div>
+        <nav class="main-nav">
+            <a href="#">Home</a>
+            <a href="#">Get Started</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Replace hardcoded langflow-chat with dynamic content -->
+        <section id="research-chat-section" class="chat-section">
+            <h2>chat with research consultant</h2>
+            <div id="researchChatContainer"></div> <!-- Placeholder -->
+        </section>
+
+        <section id="optical-chat-section" class="chat-section">
+            <h2>chat with optical predictor & designer</h2>
+            <div id="opticalChatContainer"></div> <!-- Placeholder -->
+        </section>
+
+        <section id="visualization-section">
+            <h2>visualization window</h2>
+            <div class="chart-container">
+                <canvas id="myChart"></canvas>
+            </div>
+            <p id="no-data-message">Waiting for Agent to generate visualization data...</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 AI Optical Agent</p>
+    </footer>
+
+    <script src="langflow-embedded-chat/dist/build/static/js/bundle.min.js"></script>
+    <!-- Load local config and render langflow-chat -->
+    <script>
+        // Load local config (only for local development)
+        fetch('local-config.json')
+            .then(response => {
+                if (!response.ok) throw new Error("Config file not found (create local-config.json)");
+                return response.json();
+            })
+            .then(config => {
+                // Render Research Consultant Chat
+                const researchChat = document.createElement('langflow-chat');
+                researchChat.id = "researchConsultantChat";
+                researchChat.setAttribute('api_key', config.langflowApiKey);
+                researchChat.setAttribute('window_title', "Research Consultant");
+                researchChat.setAttribute('flow_id', config.researchFlowId);
+                researchChat.setAttribute('host_url', config.langflowHostUrl);
+                researchChat.setAttribute('width', "500");
+                researchChat.setAttribute('height', "400");
+                researchChat.setAttribute('start_open', "true");
+                researchChat.setAttribute('chat_trigger_style', '{ "display": "none" }');
+                document.getElementById('researchChatContainer').appendChild(researchChat);
+
+                // Render Optical Predictor Chat
+                const opticalChat = document.createElement('langflow-chat');
+                opticalChat.id = "opticalPredictorChat";
+                opticalChat.setAttribute('api_key', config.langflowApiKey);
+                opticalChat.setAttribute('window_title', "Optical Predictor & Designer");
+                opticalChat.setAttribute('flow_id', config.opticalFlowId);
+                opticalChat.setAttribute('host_url', config.langflowHostUrl);
+                opticalChat.setAttribute('width', "500");
+                opticalChat.setAttribute('height', "400");
+                opticalChat.setAttribute('start_open', "true");
+                opticalChat.setAttribute('chat_trigger_style', '{ "display": "none" }');
+                document.getElementById('opticalChatContainer').appendChild(opticalChat);
+            })
+            .catch(error => {
+                console.error("Failed to load config:", error);
+                alert("Missing local-config.json! Create it with your Langflow API key (see README).");
+            });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
