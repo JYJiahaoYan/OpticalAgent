@@ -14,10 +14,10 @@ from api.inference_api.inference_service import InferenceService
 project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))  # Get the project root directory, pointing to graph_AI_optics/
 
 # Path to the model checkpoint (.pt file)
-CHECKPOINT_PATH = os.path.join(project_root, "code", "examples", "ckpts", "checkpoint_best.pt")
+CHECKPOINT_PATH = os.path.join(project_root, "OpticalGraphormer", "code", "examples", "ckpts", "checkpoint_best.pt")
 
 # Path to the data directory (contains optical_dataset.py and related data files such as config_list.json)
-USER_DATA_DIR = os.path.join(project_root, "code", "graphormer", "data")
+USER_DATA_DIR = os.path.join(project_root, "OpticalGraphormer", "code", "graphormer", "data")
 
 # Inference device
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"

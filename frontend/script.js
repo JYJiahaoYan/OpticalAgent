@@ -16,6 +16,16 @@
     handleNewMessage(newMessage, flow_id);
   });
 
+  // Extract JSON fragment from text (core fix logic)
+  function extractJsonFromText(text) {
+    // Match JSON block from first { to last } (supports multi-line/single-line)
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      throw new Error('No valid JSON block found in message');
+    }
+    return jsonMatch[0];
+  }
+
   // Handle new messages (added flow_id parameter to match target components)
   function handleNewMessage(message, flow_id) {
     console.log('[Script.js] Processing message', {
@@ -30,7 +40,11 @@
       const messageText = message.message;
 
       try {
-        const parsedMessage = JSON.parse(messageText);
+        // Step 1: Extract JSON fragment (core fix)
+        const jsonText = extractJsonFromText(messageText);
+        // Step 2: Parse JSON
+        const parsedMessage = JSON.parse(jsonText);
+
         if (!parsedMessage) throw new Error('JSON parsed as empty');
 
         // Check required fields for spectrum data
@@ -55,8 +69,11 @@
         }
       } catch (e) {
         console.error('Failed to parse spectrum data:', e.message, 'Original message:', messageText);
-        // Display error prompt to user
-        document.getElementById('no-data-message').textContent = 'AI response format error, unable to generate spectrum chart';
+        // Optimized error prompt (more precise)
+        const errorMsg = e.message.includes('No valid JSON block')
+          ? 'No valid spectrum data (invalid JSON format) found in AI response, unable to generate chart'
+          : 'AI response format error, unable to generate spectrum chart';
+        document.getElementById('no-data-message').textContent = errorMsg;
       }
     }
   }
