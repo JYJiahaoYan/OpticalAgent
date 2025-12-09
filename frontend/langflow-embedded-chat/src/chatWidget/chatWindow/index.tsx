@@ -1,5 +1,5 @@
 import { Send } from "lucide-react";
-import { extractMessageFromOutput, getAnimationOrigin, getChatPosition } from "../utils";
+import { extractMessageFromOutput } from "../utils";
 import React, { useEffect, useRef, useState } from "react";
 import { ChatMessageType } from "../../types/chatWidget";
 import ChatMessage from "./chatMessage";
@@ -31,8 +31,6 @@ export default function ChatWindow({
   input_style,
   input_container_style,
   addMessage,
-  position,
-  triggerRef,
   width = 450,
   height = 650,
   tweaks,
@@ -64,8 +62,6 @@ export default function ChatWindow({
   updateLastMessage: Function;
   messages: ChatMessageType[];
   addMessage: Function;
-  position?: string;
-  triggerRef: React.RefObject<HTMLButtonElement>;
   width?: number;
   height?: number;
   sessionId: React.MutableRefObject<string>;
@@ -75,19 +71,7 @@ export default function ChatWindow({
   const [value, setValue] = useState<string>("");
   const ref = useRef<HTMLDivElement>(null);
   const lastMessage = useRef<HTMLDivElement>(null);
-  const [windowPosition, setWindowPosition] = useState({ left: "0", top: "0" });
   const inputRef = useRef<HTMLInputElement>(null); /* User input Ref */
-  useEffect(() => {
-    if (triggerRef)
-      setWindowPosition(
-        getChatPosition(
-          triggerRef.current!.getBoundingClientRect(),
-          width,
-          height,
-          position
-        )
-      );
-  }, [triggerRef, width, height, position]);
 
   /* Initial listener for loss of focus that refocuses User input after a small delay */
 
@@ -189,18 +173,18 @@ export default function ChatWindow({
 
   return (
     <div
-      className={
-        "cl-chat-window " +
-        getAnimationOrigin(position) +
-        (open ? " cl-scale-100" : " cl-scale-0")
-      }
-      style={{ ...windowPosition, zIndex: 9999 }}
+      className="cl-chat-window cl-scale-100"  // 始终显示，不使用缩放动画
+      style={{ width: '100%', height: '100%', zIndex: 100 }}
     >
-      <div
-        style={{ ...chat_window_style, width: width, height: height }}
-        ref={ref}
-        className="cl-window"
-      >
+        <div
+          style={{
+            ...chat_window_style,
+            width: '100%',
+            height: height || 650,
+          }}
+          ref={ref}
+          className="cl-window"
+        >
         <div className="cl-header">
           {window_title}
           <div className="cl-header-subtitle">

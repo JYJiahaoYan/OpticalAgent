@@ -25,7 +25,6 @@ export default function ChatWidget({
   online_message,
   offline_message,
   window_title,
-  chat_position,
   placeholder,
   input_style,
   placeholder_sending,
@@ -40,7 +39,6 @@ export default function ChatWidget({
   input_type: string,
   output_component?: string;
   send_icon_style?: React.CSSProperties;
-  chat_position?: string;
   chat_trigger_style?: React.CSSProperties;
   bot_message_style?: React.CSSProperties;
   user_message_style?: React.CSSProperties;
@@ -645,11 +643,13 @@ video {
 .cl-window {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   border-radius: 1rem;
   --tw-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   --tw-shadow-colored: 0 0 10px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  overflow: visible;
+  box-sizing: border-box;
+  max-height: 90vh;
 }
 
 .cl-scale-100 {
@@ -764,6 +764,8 @@ video {
   padding-bottom: 0.5rem;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  overflow-y: auto;
+  flex: 1;
 }
 
 .cl-messages_container::-webkit-scrollbar {
@@ -2167,12 +2169,6 @@ input::-ms-input-placeholder { /* Microsoft Edge */
   return (
     <div style={{ position: "relative" }}>
       <style dangerouslySetInnerHTML={{ __html: styles + markdownBody }}></style>
-      <ChatTrigger
-        triggerRef={triggerRef}
-        open={open}
-        setOpen={setOpen}
-        style={chat_trigger_style}
-      />
       <ChatWindow
         api_key={api_key}
         input_type={input_type}
@@ -2201,8 +2197,6 @@ input::-ms-input-placeholder { /* Microsoft Edge */
         updateLastMessage={updateLastMessage}
         addMessage={addMessage}
         messages={messages}
-        triggerRef={triggerRef}
-        position={chat_position}
         sessionId={sessionId}
         additional_headers={additional_headers}
       />

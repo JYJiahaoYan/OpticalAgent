@@ -103,19 +103,19 @@ h2 {
     color: #2c3e50; /* Darker heading color */
 }
 
-/* Langflow Chat Widget styles */
+
 .chat-widget-wrapper {
-    background-color: #fff; /* Ensure chat widget has white background */
-    border-radius: 8px; /* Match section border-radius */
-    overflow: hidden; /* Hide any overflow from the chat component */
-    border: 1px solid #ddd; /* Subtle border for the chat area itself */
+    height: 650px; /* Adjusted height for better visual balance */
 }
 
 langflow-chat {
     width: 100%;
-    height: 450px; /* Adjusted height for better visual balance */
+    height: 100%;
     display: block;
-    border: none; /* Remove any default border from the component */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
 }
 
 /* Chart container styles */
