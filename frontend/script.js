@@ -66,6 +66,8 @@
           console.log("Received structure data:", parsedMessage);
           // Can add processing logic for structure data
           document.getElementById('no-data-message').textContent = 'Received structure data, visualization not supported yet';
+          document.getElementById('no-data-message').style.display = 'block';
+          if (myChartInstance) myChartInstance.destroy(); // Clear old chart if new data type
         }
       } catch (e) {
         console.error('Failed to parse spectrum data:', e.message, 'Original message:', messageText);
@@ -74,6 +76,8 @@
           ? 'No valid spectrum data (invalid JSON format) found in AI response, unable to generate chart'
           : 'AI response format error, unable to generate spectrum chart';
         document.getElementById('no-data-message').textContent = errorMsg;
+        document.getElementById('no-data-message').style.display = 'block';
+        if (myChartInstance) myChartInstance.destroy(); // Clear old chart on error
       }
     }
   }
@@ -144,7 +148,7 @@
           label: title,
           data: trimmedIntensities,
           borderColor: 'rgb(75, 192, 192)',
-          backgroundColor: 'rgba(75, 192, 192, 0.1)',
+          backgroundColor: 'rgba(75, 192, 192, 0.1)', // Area under the line
           borderWidth: 2,
           tension: 0.2,
           pointRadius: 0,
